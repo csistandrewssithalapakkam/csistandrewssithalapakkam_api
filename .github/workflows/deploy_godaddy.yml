@@ -24,7 +24,7 @@ jobs:
       - name: Build frontend assets if present
         run: |
           if [ -f package.json ]; then
-            npm ci
+            npm install
             npm run production || npm run build || true
           fi
 
