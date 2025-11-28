@@ -1,0 +1,643 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "CSI St. Andrews Sithalapakkam API",
+        "description": "API documentation for CSI St. Andrews Sithalapakkam",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost/csistandrewssithalapakkam_api/public",
+            "description": "API Server"
+        }
+    ],
+    "paths": {
+        "/api/auth/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Register a new user",
+                "description": "Register a new user",
+                "operationId": "c7bb21a0d87049e161b8e4c9b0d909f2",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_name",
+                                    "user_email",
+                                    "user_password"
+                                ],
+                                "properties": {
+                                    "user_name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "user_email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john@example.com"
+                                    },
+                                    "user_password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "type": "object"
+                                        },
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login user and get JWT token",
+                "description": "Login user and get JWT token",
+                "operationId": "dd51a484b7fa0f97c7680fdbde14cf5f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_email",
+                                    "user_password"
+                                ],
+                                "properties": {
+                                    "user_email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john@example.com"
+                                    },
+                                    "user_password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "token": {
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    }
+                }
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout user",
+                "description": "Logout user (blacklist token)",
+                "operationId": "df9bdc6c7a6d9f20b983526b2ec0f698",
+                "responses": {
+                    "200": {
+                        "description": "Logout successful"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/auth/refresh": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Refresh JWT token",
+                "description": "Refresh JWT token",
+                "operationId": "30c20c52f5f72828d8c531fd7c9ea3e7",
+                "responses": {
+                    "200": {
+                        "description": "Token refreshed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/auth/me": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Get authenticated user profile",
+                "description": "Get authenticated user profile",
+                "operationId": "b5de204f5e452ef51327c691aa99e77c",
+                "responses": {
+                    "200": {
+                        "description": "User profile",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/events/birthdays/today": {
+            "get": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Get today's birthdays",
+                "description": "Get today's birthdays",
+                "operationId": "912f773d4f2f0ae5484fbf19578c4349",
+                "responses": {
+                    "200": {
+                        "description": "List of today's birthdays",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "bd_id": {
+                                                "type": "integer"
+                                            },
+                                            "bd_member_id": {
+                                                "type": "integer"
+                                            },
+                                            "bd_date": {
+                                                "type": "string",
+                                                "format": "date"
+                                            },
+                                            "member": {
+                                                "type": "object"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/events/birthdays/upcoming": {
+            "get": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Get upcoming birthdays (next 30 days)",
+                "description": "Get upcoming birthdays (next 30 days)",
+                "operationId": "c3e2413931cd139bac7b79471ec5c236",
+                "responses": {
+                    "200": {
+                        "description": "List of upcoming birthdays"
+                    }
+                }
+            }
+        },
+        "/api/events/birthdays": {
+            "get": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Get all birthdays",
+                "description": "Get all birthdays",
+                "operationId": "d5af295362c17b1642ce9e94674e2458",
+                "responses": {
+                    "200": {
+                        "description": "List of all birthdays"
+                    }
+                }
+            }
+        },
+        "/api/events/anniversaries/today": {
+            "get": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Get today's anniversaries",
+                "description": "Get today's anniversaries",
+                "operationId": "55d9d55260cbaadcab3bedd31132a937",
+                "responses": {
+                    "200": {
+                        "description": "List of today's anniversaries"
+                    }
+                }
+            }
+        },
+        "/api/events/anniversaries/upcoming": {
+            "get": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Get upcoming anniversaries (next 30 days)",
+                "description": "Get upcoming anniversaries (next 30 days)",
+                "operationId": "d5b64186d7460a55c085dc66a31bf10a",
+                "responses": {
+                    "200": {
+                        "description": "List of upcoming anniversaries"
+                    }
+                }
+            }
+        },
+        "/api/events/anniversaries": {
+            "get": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Get all anniversaries",
+                "description": "Get all anniversaries",
+                "operationId": "b19ae6109ce1454c699f0713832ce760",
+                "responses": {
+                    "200": {
+                        "description": "List of all anniversaries"
+                    }
+                }
+            }
+        },
+        "/api/example": {
+            "get": {
+                "tags": [
+                    "Example"
+                ],
+                "summary": "Get example data",
+                "description": "Get example data",
+                "operationId": "7368437d1a069b4167e5244ed097467a",
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Hello from API"
+                                        },
+                                        "timestamp": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/gallery/folders": {
+            "get": {
+                "tags": [
+                    "Gallery"
+                ],
+                "summary": "Get all image folders",
+                "description": "Get all image folders",
+                "operationId": "49f33d9b60f6c21dd4a96f2539b49de1",
+                "responses": {
+                    "200": {
+                        "description": "List of image folders",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "if_id": {
+                                                "type": "integer"
+                                            },
+                                            "if_name": {
+                                                "type": "string"
+                                            },
+                                            "if_status": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/gallery/images": {
+            "get": {
+                "tags": [
+                    "Gallery"
+                ],
+                "summary": "Get all gallery images",
+                "description": "Get all images",
+                "operationId": "712548f691b5b740672cf72f33e651d3",
+                "parameters": [
+                    {
+                        "name": "folder_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of gallery images",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "ig_id": {
+                                                "type": "integer"
+                                            },
+                                            "ig_folder_id": {
+                                                "type": "integer"
+                                            },
+                                            "ig_text": {
+                                                "type": "string"
+                                            },
+                                            "ig_image_url": {
+                                                "type": "string"
+                                            },
+                                            "ig_show_flag": {
+                                                "type": "string"
+                                            },
+                                            "ig_image_status": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/gallery/folder/{folder_id}": {
+            "get": {
+                "tags": [
+                    "Gallery"
+                ],
+                "summary": "Get images by folder ID",
+                "description": "Get images by folder",
+                "operationId": "9d15f827842a978b4f683e69df9c99f3",
+                "parameters": [
+                    {
+                        "name": "folder_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Images in the folder"
+                    },
+                    "404": {
+                        "description": "Folder not found"
+                    }
+                }
+            }
+        },
+        "/api/verses/today": {
+            "get": {
+                "tags": [
+                    "Verses"
+                ],
+                "summary": "Get verse for today",
+                "description": "Get verse for today/current week",
+                "operationId": "510e742530b3a185b744cfdecaec742a",
+                "responses": {
+                    "200": {
+                        "description": "Today's verse",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "verse_id": {
+                                            "type": "integer"
+                                        },
+                                        "week_date": {
+                                            "type": "string",
+                                            "format": "date"
+                                        },
+                                        "verse_tamil": {
+                                            "type": "string"
+                                        },
+                                        "verse_english": {
+                                            "type": "string"
+                                        },
+                                        "verse_status": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No verse found"
+                    }
+                }
+            }
+        },
+        "/api/verses": {
+            "get": {
+                "tags": [
+                    "Verses"
+                ],
+                "summary": "Get all verses",
+                "description": "Get all verses",
+                "operationId": "4556d7df99a9429e25b47ca5a89477a2",
+                "responses": {
+                    "200": {
+                        "description": "List of verses",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "verse_id": {
+                                                "type": "integer"
+                                            },
+                                            "week_date": {
+                                                "type": "string",
+                                                "format": "date"
+                                            },
+                                            "verse_tamil": {
+                                                "type": "string"
+                                            },
+                                            "verse_english": {
+                                                "type": "string"
+                                            },
+                                            "verse_status": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/verses/{id}": {
+            "get": {
+                "tags": [
+                    "Verses"
+                ],
+                "summary": "Get verse by ID",
+                "description": "Get verse by ID",
+                "operationId": "d49075d9debecb345ab14547b555875c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Verse details"
+                    },
+                    "404": {
+                        "description": "Verse not found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "Login with email and password to get the authentication token",
+                "name": "Token based based auth",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Auth"
+        },
+        {
+            "name": "Events",
+            "description": "Events"
+        },
+        {
+            "name": "Example",
+            "description": "Example"
+        },
+        {
+            "name": "Gallery",
+            "description": "Gallery"
+        },
+        {
+            "name": "Verses",
+            "description": "Verses"
+        }
+    ]
+}
