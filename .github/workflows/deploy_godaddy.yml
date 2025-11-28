@@ -1,0 +1,60 @@
+name: Deploy to GoDaddy via FTP
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP and Composer
+        uses: shivammathur/setup-php@v3
+        with:
+          php-version: '8.1'
+          extensions: mbstring, bcmath, xml
+          tools: composer:2
+
+      - name: Install Composer dependencies (vendor will be uploaded)
+        run: composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction --no-progress
+
+      - name: Build frontend assets if present
+        run: |
+          if [ -f package.json ]; then
+            npm ci
+            npm run production || npm run build || true
+          fi
+
+      - name: Clean unneeded files before upload
+        run: |
+          # Ensure large dev directories are removed from upload
+          rm -rf .github
+          rm -rf tests
+          rm -rf node_modules
+
+      - name: Deploy to GoDaddy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: ${{ secrets.FTP_PORT || 21 }}
+          local-dir: './'
+          server-dir: ${{ secrets.FTP_TARGET }}
+          exclude: |
+            .git
+            .github
+            .env
+            .env.*
+            storage/*
+            storage
+            vendor/.git
+            tests
+            README.md
+            docs
+
+      - name: Post-deploy instructions (run on server manually if needed)
+        run: echo "Uploaded files to GoDaddy. Ensure `.env` and storage permissions are configured on the server."
