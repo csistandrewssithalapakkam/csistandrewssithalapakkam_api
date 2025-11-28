@@ -1,0 +1,64 @@
+# Laravel & PHP
+/vendor/
+/node_modules/
+/.env
+/.env.*
+Homestead.yaml
+Homestead.json
+/.phpunit.result.cache
+/.phpunit.cache
+
+# Public storage symlink
+/public/storage
+
+# Ignore Laravel storage and compiled files, but keep .gitignore placeholders
+/storage/*.key
+/storage/debugbar/
+/storage/framework/cache/*
+!/storage/framework/.gitignore
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*
+
+/bootstrap/cache/*.php
+
+# Composer
+/composer.phar
+
+# Node
+/npm-debug.log*
+/yarn-debug.log*
+/yarn-error.log*
+/pnpm-debug.log*
+
+# IDEs and editors
+/.idea/
+/.vscode/
+/.history/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Misc
+.php_cs.cache
+.php_cs.dist
+/coverage/
+.env.testing
+.env.backup
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+.env
+.env.backup
+.phpunit.result.cache
+docker-compose.override.yml
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+/.idea
+/.vscode
