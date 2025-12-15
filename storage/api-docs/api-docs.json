@@ -225,6 +225,88 @@
                 ]
             }
         },
+        "/api/ribbon": {
+            "get": {
+                "tags": [
+                    "Ribbon"
+                ],
+                "summary": "Get ribbon status",
+                "operationId": "c2e19a85d0c7985829334596937487a3",
+                "responses": {
+                    "200": {
+                        "description": "Ribbon status retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "ribbon": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Ribbon"
+                ],
+                "summary": "Set ribbon status",
+                "operationId": "606e389723cbd4902e362bc0c78bf60d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "ribbon_status"
+                                ],
+                                "properties": {
+                                    "ribbon_status": {
+                                        "type": "integer",
+                                        "enum": [
+                                            0,
+                                            1
+                                        ],
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ribbon status updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "ribbon": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
         "/api/events/birthdays/today": {
             "get": {
                 "tags": [
@@ -622,6 +704,10 @@
         {
             "name": "Auth",
             "description": "Auth"
+        },
+        {
+            "name": "Ribbon",
+            "description": "Ribbon"
         },
         {
             "name": "Events",

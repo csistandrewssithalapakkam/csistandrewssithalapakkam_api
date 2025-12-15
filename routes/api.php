@@ -26,6 +26,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Public routes
 Route::get('/example', [ExampleController::class, 'example']);
 
+// Ribbon status endpoints
+Route::get('/ribbon', [AuthController::class, 'getRibbon']);
+Route::post('/ribbon', [AuthController::class, 'setRibbon']);
+
 // Auth routes (public)
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
